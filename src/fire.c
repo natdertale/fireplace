@@ -6,16 +6,11 @@
 #include "freesia_tuilib.h"
 
 Fire init_fire(short w, short h, int heat) {
-    /*
-    * create a WxH mat and set pixel at the bottom to heat value +-2
-    * h = 0 is the top of the mat
-    */
     srand(time(NULL));
-    // allocate memory
+    
     short** mat = malloc(h * sizeof(short*));
     for (int i=0; i<=h; i++) {
         mat[i] = malloc(w * sizeof(short));
-
         
         // set heat randomly
         for (int j=0; j<=w; j++) {
@@ -23,7 +18,6 @@ Fire init_fire(short w, short h, int heat) {
                 mat[i][j] = heat - (rand()%(heat/2));
             } 
         }
-
     }
     
     Fire fire = {
@@ -49,7 +43,7 @@ void update_fire(Fire* fire, short direction, short heat_decay, short extinguish
             else if (direction<0) prevw = w - (rand()%abs(direction));
             prevw += (rand()*10 < 5)? 1 : -1;
 
-            //making sure we're in the mat
+            //making sure we are in bound
             if (w<width && w>0) {
                 new_heat = fire->fire_mat[prevh][prevw] - (1+rand()%heat_decay);
             } else {
@@ -91,24 +85,16 @@ void _render_fire_values(Fire* fire) {
 }
 
 void render_fire(Fire* fire, char* charmap) {
-    /*
-    * TODO
-    * for each char
-    * higher values are closer to white 
-    * lower are dark red
-    * high 0xfff5f5 0xffc130 0xff8330 0xff0000 0xff3535 low
-    * setTextColor(COLORSPACE_RGB, 0xff0000);
-    */
     static int colors[9] = {
         0x300000,
-        0x5c0101,  // dark red
-        0xa30000,  // dark red
-        0xff0000,  // red
-        0xff8330,  // orange
-        0xff8335,  // orange
-        0xffc130,  // yellow
-        0xfff5f5,  // near white
-        0xfff9f9   // white
+        0x5c0101, 
+        0xa30000,  
+        0xff0000,  
+        0xff8330,  
+        0xff8335,  
+        0xffc130,  
+        0xfff5f5,  
+        0xfff9f9   
     };
 
     short height = fire->height;
@@ -117,14 +103,13 @@ void render_fire(Fire* fire, char* charmap) {
 
     for (short i = 0; i < height; i++) {
         
-        //setCursorPos(0, i);
+        
         for (short j = 0; j < width; j++) {
             setCursorPos(j, i);
             short heat = fire->fire_mat[i][j];
             if (heat < 0)        heat = 0;
             if (heat > maxheat)  heat = 0;
-
-            // Map heat level to color index 0–4
+            
             int idx = (heat * 8) / maxheat;
 
             setTextColor(COLORSPACE_RGB, colors[idx]);
