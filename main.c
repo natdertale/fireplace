@@ -28,6 +28,8 @@ void clear_on_close(int sig) {
         usleep(80000);
     }
 
+    free_fire(&fire);
+
     for (short i=0; i<tw.height;i++) printf("\n");
     setCursorPos(0,0);
     resetStyle();
@@ -59,7 +61,7 @@ int main(int argc, char* argv[]) {
         return 2;
     }
 
-    for (int i=0; i<10000; i++) {
+    for (int i=0; i<1000; i--) { //made the loop infinite
         setCursorPos(0,0);
         render_fire(&fire, asciiTable);
         update_fire(&fire, direction, heat_decay, 0);
@@ -67,7 +69,7 @@ int main(int argc, char* argv[]) {
         usleep(80000);
     }
 
-    free_fire(&fire);
+    //free_fire(&fire);
 
     return 0;
 }

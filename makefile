@@ -15,7 +15,7 @@ $(TARGET): $(OBJS) $(STATIC_LIB) | $(BIN_DIR)
 	$(CC) -o $@ $(OBJS) $(STATIC_LIB) -lm
 
 %.o: %.c
-	$(CC) -O2 -c $< -o $@
+	$(CC) -c $< -o $@
 
 
 $(BIN_DIR):
