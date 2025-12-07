@@ -1,4 +1,4 @@
-# 🔥 Fireplace — Terminal ASCII Fire Simulation
+# 🔥 Fireplace — Terminal Fire Simulation in ASCII
 Fireplace is a lightweight C program that generates an animated ASCII fire in your terminal.
 
 This project was inpired by this article : [How DOOM fire was done](https://fabiensanglard.net/doom_fire_psx/)
