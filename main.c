@@ -15,6 +15,8 @@ short direction = 0;
 short heat = 80;
 short heat_decay = 2;
 
+short exit_code = 0;
+
 Fire fire;
 
 void clear_on_close(int sig) {
@@ -24,16 +26,25 @@ void clear_on_close(int sig) {
         setCursorPos(0,0);
         render_fire(&fire, asciiTable);
         update_fire(&fire, direction, heat_decay, 1);
-
         usleep(80000);
     }
 
     free_fire(&fire);
 
-    for (short i=0; i<tw.height;i++) printf("\n");
-    setCursorPos(0,0);
-    resetStyle();
     exit(0);
+}
+
+// clear screen and reset style on exit
+void resetStyleOnEnd( void ) __attribute__ ((destructor)); 
+void resetStyleOnEnd( void ) {
+    if (exit_code==0) {
+        for (short i=0; i<tw.height;i++) printf("\n");
+        setCursorPos(0,0);
+        resetStyle();
+    } else {
+        resetStyle();
+    }
+    
 }
 
 int main(int argc, char* argv[]) {
@@ -46,6 +57,7 @@ int main(int argc, char* argv[]) {
         setTextColor(COLORSPACE_RGB, 0xff0000);
         printf("Usage: %s heat(short), heat_decay(short) \n", argv[0]);
         resetStyle();
+        exit_code = 1;
         return 1;
     }
 
@@ -58,6 +70,7 @@ int main(int argc, char* argv[]) {
         setTextColor(COLORSPACE_RGB, 0xff0000);
         printf("Value: %d heat(short) is too high, maximum value is %d\n", heat, strlen(asciiTable));
         resetStyle();
+        exit_code = 2;
         return 2;
     }
 
@@ -69,7 +82,8 @@ int main(int argc, char* argv[]) {
         usleep(80000);
     }
 
-    //free_fire(&fire);
+    // never called exept if the loop somehow stops
+    free_fire(&fire);
 
     return 0;
 }

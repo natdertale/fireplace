@@ -8,9 +8,9 @@
 Fire init_fire(short w, short h, int heat) {
     srand(time(NULL));
     
-    short** mat = malloc(h * sizeof(short*));
+    short** mat = malloc(h * sizeof(short*)+1);
     for (int i=0; i<=h; i++) {
-        mat[i] = malloc(w * sizeof(short));
+        mat[i] = malloc(w * sizeof(short)+1);
         
         // set heat randomly
         for (int j=0; j<=w; j++) {
@@ -65,7 +65,7 @@ void update_fire(Fire* fire, short direction, short heat_decay, short extinguish
 
 void free_fire(Fire* fire) {
     if (fire->fire_mat != NULL) {
-        for (int i=0; i<= fire->height; i++) {
+        for (int i=0; i< fire->height; i++) {
             if (fire->fire_mat[i] != NULL) free(fire->fire_mat[i]);
         }
         free(fire->fire_mat);
