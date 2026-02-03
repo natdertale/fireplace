@@ -6,15 +6,14 @@ This project was inpired by this article : [How DOOM fire was done](https://fabi
 
 ### Usage
 ```bash
-fireplace <heat> <heat_decay> [direction]
+fireplace heat_decay direction
 ```
-**\<heat>**: The initial heat of the fire (short). Determines the intensity of the flame. Should be less than the length of the ASCII table used for rendering.
 
-**<heat_decay>**: How quickly the heat decays per frame (short). Higher values make the fire burn out faster.
+**heat_decay**: How quickly the heat decays per frame (short). Higher values make the fire burn out faster.
 
-**[direction]** (optional): The wind direction affecting the flames. Positive values push flames to the right, negative to the left, and 0 for no wind.
+**direction** (optional): The wind direction affecting the flames. Positive values push flames to the right, negative to the left, and 0 for no wind.
 
 Example:
 ``` bash
-fireplace 80 2 1
+fireplace 2 1
 ```

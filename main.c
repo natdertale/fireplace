@@ -8,10 +8,12 @@
 #include "src/fire.h"
 #include "src/freesia_tuilib.h"
 
+//TODO remove heat
+
 TermW tw = {10, 10};
 char* asciiTable = " ..\'``\",,,:::;IIIl!!iii????*####&&&8888MMWWBBBBB@@@@@$$$$░░░▒▒▒▓▓▓\0";
 
-short direction = 0;
+short direction = 1;
 short heat = 80;
 short heat_decay = 2;
 
@@ -53,26 +55,19 @@ int main(int argc, char* argv[]) {
     fire = init_fire(tw.width, tw.height+1, heat);
     signal(SIGINT, clear_on_close);
 
-    if (argc < 3) {
+    if (argc < 2) {
         setTextColor(COLORSPACE_RGB, 0xff0000);
-        printf("Usage: %s heat(short), heat_decay(short) \n", argv[0]);
+        printf("Usage: %s heat_decay (direction) \n", argv[0]);
         resetStyle();
         exit_code = 1;
         return 1;
     }
 
-    heat = atoi(argv[1]);
-    heat_decay = atoi(argv[2]);
+    heat_decay = atoi(argv[1]);
+    // prevent crash with invalid values
+    heat_decay = heat_decay>0?heat_decay: 1;
 
-    if (argc >= 4) direction = atoi(argv[3]);
-    
-    if (heat > strlen(asciiTable)) {
-        setTextColor(COLORSPACE_RGB, 0xff0000);
-        printf("Value: %d heat(short) is too high, maximum value is %d\n", heat, strlen(asciiTable));
-        resetStyle();
-        exit_code = 2;
-        return 2;
-    }
+    if (argc >= 3) direction = atoi(argv[2]);
 
     for (int i=0; i<1000; i--) { //made the loop infinite
         setCursorPos(0,0);
